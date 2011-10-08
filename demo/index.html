@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<title>SwipeView</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="../src/swipeview.js"></script>
+</head>
+
+<body>
+	<div id="wrapper"></div>
+	
+<script type="text/javascript">
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	
+	var sv = new SwipeView('#wrapper', {
+		pages: [
+		{
+			source: 'images/pic01.jpg',
+			width: 300,
+			height: 213
+		},
+		{
+			source: 'images/pic02.jpg',
+			width: 300,
+			height: 164
+		},
+		{
+			source: 'images/pic03.jpg',
+			width: 300,
+			height: 213
+		},
+		{
+			source: 'images/pic04.jpg',
+			width: 268,
+			height: 400
+		},
+		{
+			source: 'images/pic05.jpg',
+			width: 300,
+			height: 213
+		},
+		{
+			source: 'images/pic06.jpg',
+			width: 300,
+			height: 400
+		}]
+	});
+</script>
+</body>
+</html>
