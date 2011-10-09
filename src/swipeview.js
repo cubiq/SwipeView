@@ -40,6 +40,7 @@ var SwipeView = (function(){
 			for (i=-1; i<2; i++) {
 				div = document.createElement('div');
 				div.style.cssText = '-webkit-transform:translateZ(0);position:absolute;top:0;height:100%;width:100%;left:' + i*100 + '%';
+				if (!div.dataset) div.dataset = {};
 				div.dataset.pageIndex = i + 1;
 				div.dataset.upcomingPageIndex = div.dataset.pageIndex;
 
