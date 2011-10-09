@@ -1,4 +1,4 @@
-SwipeView v0.1 - 2011-10-08
+SwipeView v0.2 - 2011-10-09
 ===========================
 
 Virtually infinite loop-able horizontal carousel for mobile webkit (in 4kb).

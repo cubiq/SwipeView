@@ -5,6 +5,9 @@ body {
 	background:#333;
 	-webkit-user-select:none;
     -webkit-text-size-adjust:none;
+	color:#eee;
+	font-family:helvetica;
+	font-size:14px;
 }
 
 #wrapper {
@@ -18,10 +21,6 @@ body {
 	-webkit-box-orient:horizontal;
 	-webkit-box-pack:center;
 	-webkit-box-align:center;
-
-/*	text-align:center;
-	vertical-align:middle;
-	position:relative;*/
 	overflow:hidden;
 }
 
@@ -31,8 +30,20 @@ body {
 	border:5px solid #eee;
 	-webkit-box-shadow:0 2px 6px #000;
 	-webkit-border-radius:2px;
-/*	position:absolute;
-	display:block;
-	top:50%;
-	left:50%;*/
+	-webkit-transition-duration:.4s;
+	-webkit-transition-property:opacity;
+	opacity:1;
+}
+
+#wrapper > div > .swipeview-loading {
+	background-image:-webkit-gradient(linear, 0 0, 100% 0, from(#444), to(#555)),
+		-webkit-gradient(linear, 0 0, 100% 0, from(#777), to(#777));
+	background-position:50% 50%, 50% 50%;
+	background-size:200px 140px, 210px 150px;
+	background-repeat:no-repeat;
+}
+
+#wrapper > div > .swipeview-loading img {
+	-webkit-transition-duration:0;
+	opacity:0;
 }
