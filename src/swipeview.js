@@ -30,6 +30,8 @@ var SwipeView = (function(){
 			this.wrapper.style.overflow = 'hidden';
 			this.wrapper.style.position = 'relative';
 			
+			this.masterPages = [];
+			
 			div = document.createElement('div');
 			div.style.cssText = 'position:relative;top:0;height:100%;width:100%;-webkit-transition-duration:0;-webkit-transform:translate3d(0,0,0);-webkit-transition-timining-function:ease-out';
 			this.wrapper.appendChild(div);
@@ -224,6 +226,19 @@ var SwipeView = (function(){
 					imageEl.width = this.options.pages[newIndex].width;
 					imageEl.height = this.options.pages[newIndex].height;
 				}
+			}
+		},
+		
+		destroy: function () {
+			// Remove the event listeners
+			window.removeEventListener(resizeEvent, this, false);
+			this.wrapper.removeEventListener(startEvent, this, false);
+			this.wrapper.removeEventListener(moveEvent, this, false);
+			this.wrapper.removeEventListener(endEvent, this, false);
+			this.slider.removeEventListener('webkitTransitionEnd', this, false);
+
+			if (!hasTouch) {
+				this.wrapper.removeEventListener('mouseout', this, false);
 			}
 		}
 	};
