@@ -63,13 +63,12 @@ var SwipeView = (function(){
 			this.wrapper.addEventListener(endEvent, this, false);
 			this.slider.addEventListener('webkitTransitionEnd', this, false);
 
-			if (!hasTouch) {
+/*			if (!hasTouch) {
 				this.wrapper.addEventListener('mouseout', this, false);
-			}
+			}*/
 		};
 	
 	SwipeView.prototype = {
-		masterPages: [],
 		currentMasterPage: 1,
 		x: 0,
 		page: 0,
@@ -91,7 +90,7 @@ var SwipeView = (function(){
 				 	this.__resize();
 					break;
 				case 'webkitTransitionEnd':
-					this.__flip();
+					if (e.target == this.slider) this.__flip();
 					break;
 			}
 		},
@@ -237,9 +236,9 @@ var SwipeView = (function(){
 			this.wrapper.removeEventListener(endEvent, this, false);
 			this.slider.removeEventListener('webkitTransitionEnd', this, false);
 
-			if (!hasTouch) {
+/*			if (!hasTouch) {
 				this.wrapper.removeEventListener('mouseout', this, false);
-			}
+			}*/
 		}
 	};
 
