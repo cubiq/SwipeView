@@ -7,7 +7,7 @@ body {
     -webkit-text-size-adjust:none;
 	color:#eee;
 	font-family:helvetica;
-	font-size:14px;
+	font-size:12px;
 }
 
 #wrapper {
@@ -18,7 +18,7 @@ body {
 
 #wrapper > div > div {
 	display:-webkit-box;
-	-webkit-box-orient:horizontal;
+	-webkit-box-orient:vertical;
 	-webkit-box-pack:center;
 	-webkit-box-align:center;
 	overflow:hidden;
@@ -35,8 +35,26 @@ body {
 	opacity:1;
 }
 
+#wrapper span {
+	position:relative;
+	display:block;
+	background:#000 -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
+	border:2px solid #777;
+	padding:0 20px;
+	margin-top:10px;
+	height:20px;
+	line-height:20px;
+	-webkit-border-radius:11px;
+	-webkit-background-clip:padding-box;
+	-webkit-box-shadow:0 2px 6px #000;
+	-webkit-transition-duration:.4s;
+	-webkit-transition-property:opacity;
+	opacity:1;
+	text-shadow:0 -1px 0 #000;
+}
+
 #wrapper > div > .swipeview-loading {
-	background-image:-webkit-gradient(linear, 0 0, 100% 0, from(#444), to(#555)),
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#444), to(#555)),
 		-webkit-gradient(linear, 0 0, 100% 0, from(#777), to(#777));
 	background-position:50% 50%, 50% 50%;
 	background-size:200px 140px, 210px 150px;
@@ -44,6 +62,11 @@ body {
 }
 
 #wrapper > div > .swipeview-loading img {
+	-webkit-transition-duration:0;
+	opacity:0;
+}
+
+#wrapper > div > .swipeview-loading span {
 	-webkit-transition-duration:0;
 	opacity:0;
 }

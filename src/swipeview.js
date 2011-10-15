@@ -1,5 +1,5 @@
 /*!
- * SwipeView v0.2 ~ Copyright (c) 2011 Matteo Spinelli, http://cubiq.org
+ * SwipeView v0.3 ~ Copyright (c) 2011 Matteo Spinelli, http://cubiq.org
  * Released under MIT license, http://cubiq.org/license
  */
 var SwipeView = (function(){
@@ -13,10 +13,11 @@ var SwipeView = (function(){
 //		isImage = function (value) { return /.(jpg|jpeg|png|gif|svg|pdf)(\?.*)?$/.test(value); },
 
 		SwipeView = function (el, options) {
-			var i,
-				div,
+			var i, l, j,
+				el,
 				img,
-				image;
+				page,
+				count = 0;
 
 			this.wrapper = document.querySelector(el);
 			this.options = {
@@ -39,20 +40,31 @@ var SwipeView = (function(){
 
 			this.refreshSize();
 
-			for (i=-1; i<2; i++) {
+			for (i=0, l=this.options.pages.length; i<l; i++) {
+				for (j in this.options.pages[i]) {
+					this.options.pages[i][j].className = this.options.pages[i][j].className ? this.options.pages[i][j].className + ' swipeviewElement' + count : 'swipeviewElement' + count;
+					count++;
+				}
+				count = 0;
+			}
+
+			for (i=0; i<3; i++) {
 				div = document.createElement('div');
-				div.style.cssText = '-webkit-transform:translateZ(0);position:absolute;top:0;height:100%;width:100%;left:' + i*100 + '%';
+				div.style.cssText = '-webkit-transform:translateZ(0);position:absolute;top:0;height:100%;width:100%;left:' + (i-1)*100 + '%';
 				if (!div.dataset) div.dataset = {};
-				div.dataset.pageIndex = i + 1;
+				div.dataset.pageIndex = i;
 				div.dataset.upcomingPageIndex = div.dataset.pageIndex;
 
-				image = i==-1 ? this.options.pages.length-1 : i;
-				img = document.createElement('img');
-				img.src = this.options.pages[image].source;
-				img.width = this.options.pages[image].width;
-				img.height = this.options.pages[image].height;
-				
-				div.appendChild(img);
+				page = i==0 ? this.options.pages.length-1 : i-1;
+				for (l in this.options.pages[page]) {
+					el = document.createElement(l);
+					for (j in this.options.pages[page][l]) {
+						el[j] = this.options.pages[page][l][j];
+					}
+
+					div.appendChild(el);
+				}
+
 				this.slider.appendChild(div);
 				this.masterPages.push(div);
 			}
@@ -73,6 +85,19 @@ var SwipeView = (function(){
 		x: 0,
 		page: 0,
 		image: 0,
+
+		destroy: function () {
+			// Remove the event listeners
+			window.removeEventListener(resizeEvent, this, false);
+			this.wrapper.removeEventListener(startEvent, this, false);
+			this.wrapper.removeEventListener(moveEvent, this, false);
+			this.wrapper.removeEventListener(endEvent, this, false);
+			this.slider.removeEventListener('webkitTransitionEnd', this, false);
+
+/*			if (!hasTouch) {
+				this.wrapper.removeEventListener('mouseout', this, false);
+			}*/
+		},
 
 		handleEvent: function (e) {
 			switch (e.type) {
@@ -136,6 +161,8 @@ var SwipeView = (function(){
 			this.x = matrix[4] * 1;*/
 
 			this.slider.style.webkitTransitionDuration = '0';
+			
+			this.__event('start');
 		},
 		
 		__move: function (e) {
@@ -209,9 +236,11 @@ var SwipeView = (function(){
 		},
 		
 		__flip: function () {
-			var imageEl,
+			var el,
 				newIndex,
-				i, l;
+				i, l,
+				j, k,
+				count;
 
 			for (i=0, l=this.masterPages.length; i<l; i++) {
 				this.masterPages[i].className = '';
@@ -219,26 +248,29 @@ var SwipeView = (function(){
 
 				if (newIndex != this.masterPages[i].dataset.pageIndex) {
 					this.masterPages[i].dataset.pageIndex = newIndex;
+					count = 0;
 
-					imageEl = this.masterPages[i].getElementsByTagName('img')[0];
-					imageEl.src = this.options.pages[newIndex].source;
-					imageEl.width = this.options.pages[newIndex].width;
-					imageEl.height = this.options.pages[newIndex].height;
+					for (j in this.options.pages[newIndex]) {			// Parse all page elements
+						el = this.masterPages[i].querySelector('.swipeviewElement' + count);
+
+						for (k in this.options.pages[newIndex][j]) {	// Parse all element attributes
+							el[k] = this.options.pages[newIndex][j][k];
+						}
+						count++
+					}
 				}
 			}
 		},
 		
-		destroy: function () {
-			// Remove the event listeners
-			window.removeEventListener(resizeEvent, this, false);
-			this.wrapper.removeEventListener(startEvent, this, false);
-			this.wrapper.removeEventListener(moveEvent, this, false);
-			this.wrapper.removeEventListener(endEvent, this, false);
-			this.slider.removeEventListener('webkitTransitionEnd', this, false);
+		__event: function (type) {
+			var //i,
+				ev = document.createEvent("Event");
+			
+			ev.initEvent('swipeview-' + type, true, true);
 
-/*			if (!hasTouch) {
-				this.wrapper.removeEventListener('mouseout', this, false);
-			}*/
+//			for (i in parms) ev[i] = parms[i];
+
+			this.wrapper.dispatchEvent(ev);
 		}
 	};
 
