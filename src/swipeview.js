@@ -14,8 +14,7 @@ var SwipeView = (function(){
 
 		SwipeView = function (el, options) {
 			var i, l, j,
-				el,
-				img,
+				element,
 				page,
 				count = 0;
 
@@ -57,12 +56,12 @@ var SwipeView = (function(){
 
 				page = i==0 ? this.options.pages.length-1 : i-1;
 				for (l in this.options.pages[page]) {
-					el = document.createElement(l);
+					element = document.createElement(l);
 					for (j in this.options.pages[page][l]) {
-						el[j] = this.options.pages[page][l][j];
+						element[j] = this.options.pages[page][l][j];
 					}
 
-					div.appendChild(el);
+					div.appendChild(element);
 				}
 
 				this.slider.appendChild(div);
