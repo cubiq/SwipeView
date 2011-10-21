@@ -5,6 +5,8 @@ Virtually infinite loop-able horizontal carousel for mobile webkit (in 4kb).
 
 Read more at [cubiq.org](http://cubiq.org/swipeview)
 
-Demo: [http://cubiq.org/dropbox/SwipeView/demo/](http://cubiq.org/dropbox/SwipeView/demo/) or [http://j.mp/rpWmdU](http://j.mp/rpWmdU)
+Gallery Demo: [http://cubiq.org/dropbox/SwipeView/demo/gallery](http://cubiq.org/dropbox/SwipeView/demo/gallery)
+eReader Demo: [http://cubiq.org/dropbox/SwipeView/demo/ereader](http://cubiq.org/dropbox/SwipeView/demo/ereader)
+
 
 Screencast: [http://www.youtube.com/watch?v=Hhes5JHs8jQ](http://www.youtube.com/watch?v=Hhes5JHs8jQ)
