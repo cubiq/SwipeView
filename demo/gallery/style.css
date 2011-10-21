@@ -16,7 +16,8 @@ body {
 	height:100%;
 }
 
-#wrapper > div > div {
+#swipeview-slider > div {
+	position:relative;
 	display:-webkit-box;
 	-webkit-box-orient:vertical;
 	-webkit-box-pack:center;
@@ -24,8 +25,7 @@ body {
 	overflow:hidden;
 }
 
-#wrapper img {
-	position:relative;
+#swipeview-slider img {
 	display:block;
 	border:5px solid #eee;
 	-webkit-box-shadow:0 2px 6px #000;
@@ -35,22 +35,27 @@ body {
 	opacity:1;
 }
 
-#wrapper span {
-	position:relative;
+#swipeview-slider span {
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:100%;
+	padding:20px 0;
 	display:block;
-	background:#000 -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
-	border:2px solid #777;
-	padding:0 20px;
-	margin-top:10px;
-	height:20px;
-	line-height:20px;
-	-webkit-border-radius:11px;
-	-webkit-background-clip:padding-box;
-	-webkit-box-shadow:0 2px 6px #000;
-	-webkit-transition-duration:.4s;
-	-webkit-transition-property:opacity;
-	opacity:1;
-	text-shadow:0 -1px 0 #000;
+	background:rgba(0,0,0,0.75);
+	font-size:20px;
+	text-align:center;
+	text-shadow:0 1px 0 #000;
+	border-top:1px solid rgba(255,255,255,0.2);
+	-webkit-border-top-left-radius:10px;
+	-webkit-border-top-right-radius:10px;
+	-webkit-transition-duration:.3s;
+	-webkit-transition-property:-webkit-transform;
+	-webkit-transform:translate3d(0,100%,0);
+}
+
+#swipeview-slider .swipeview-active span {
+	-webkit-transform:translate3d(0,0,0);
 }
 
 #wrapper > div > .swipeview-loading {
@@ -68,5 +73,5 @@ body {
 
 #wrapper > div > .swipeview-loading span {
 	-webkit-transition-duration:0;
-	opacity:0;
+	-webkit-transform:translate3d(0,100%,0);
 }
