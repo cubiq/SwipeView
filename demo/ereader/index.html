@@ -101,6 +101,8 @@ window.addEventListener('load', function () {
 		ereader.slider.removeChild(container);
 
 		ereader.updatePageCount(pages.length);
+		ereader.masterPages[0].dataset.pageIndex = pages.length-1;
+		ereader.masterPages[0].dataset.upcomingPageIndex = ereader.masterPages[0].dataset.pageIndex;
 
 		// Load initial data
 		for (i=0; i<3; i++) {
