@@ -12,6 +12,16 @@
 
 <body>
 	<div id="wrapper"></div>
+	<ul id="nav">
+		<li id="prev" onclick="gallery.prev()">-</li>
+		<li class="selected" onclick="gallery.goToPage(0)"></li>
+		<li onclick="gallery.goToPage(1)"></li>
+		<li onclick="gallery.goToPage(2)"></li>
+		<li onclick="gallery.goToPage(3)"></li>
+		<li onclick="gallery.goToPage(4)"></li>
+		<li onclick="gallery.goToPage(5)"></li>
+		<li id="next" onclick="gallery.next()">+</li>
+	</ul>
 	
 <script type="text/javascript">
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -20,6 +30,7 @@ var	gallery,
 	el,
 	i,
 	page,
+	dots = document.querySelectorAll('#nav li'),
 	slides = [
 		{
 			img: 'images/pic01.jpg',
@@ -93,6 +104,9 @@ gallery.onFlip(function () {
 			el.innerHTML = slides[upcoming].desc;
 		}
 	}
+	
+	document.querySelector('#nav .selected').className = '';
+	dots[gallery.pageIndex+1].className = 'selected';
 });
 
 gallery.onMoveOut(function () {
@@ -103,7 +117,6 @@ gallery.onMoveIn(function () {
 	var className = gallery.masterPages[gallery.currentMasterPage].className;
 	/(^|\s)swipeview-active(\s|$)/.test(className) || (gallery.masterPages[gallery.currentMasterPage].className = !className ? 'swipeview-active' : className + ' swipeview-active');
 });
-
 
 </script>
 </body>

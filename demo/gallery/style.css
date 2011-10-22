@@ -16,6 +16,46 @@ body {
 	height:100%;
 }
 
+#nav {
+	position:absolute;
+	z-index:100;
+	top:8px;
+	width:200px;
+	height:20px;
+	left:50%;
+	background:rgba(0,0,0,0.75);
+	padding:0;
+	margin:0 0 0 -100px;
+	-webkit-border-radius:10px;
+}
+
+#nav li {
+	display:block;
+	float:left;
+	width:14px;
+	height:14px; line-height:14px;
+	-webkit-border-radius:7px;
+	background:rgba(255,255,255,0.1);
+	overflow:hidden;
+	padding:0;
+	margin:3px 11px 0 0;
+	text-align:center;
+}
+
+#nav li#prev {
+	margin-left:5px;
+	background:transparent;
+}
+
+#nav li#next {
+	margin-right:0;
+	background:transparent;
+}
+
+#nav li.selected {
+	background:rgba(255,255,255,0.4);
+}
+
 #swipeview-slider > div {
 	position:relative;
 	display:-webkit-box;
