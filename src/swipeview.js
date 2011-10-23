@@ -92,8 +92,10 @@ var SwipeView = (function(){
 		destroy: function () {
 			var i, l;
 			for (i=0, l=customEvents.length; i<l; i++) {
-				this.wrapper.removeEventListener('swipeview-' + customEvents[i][0], customEvents[i][1], false);
+				this.wrapper.removeEventListener('swipeview-' + this.customEvents[i][0], this.customEvents[i][1], false);
 			}
+			
+			this.customEvents = [];
 			
 			// Remove the event listeners
 			window.removeEventListener(resizeEvent, this, false);
@@ -107,27 +109,6 @@ var SwipeView = (function(){
 			}*/
 		},
 
-		handleEvent: function (e) {
-			switch (e.type) {
-				case startEvent:
-					this.__start(e);
-					break;
-				case moveEvent:
-					this.__move(e);
-					break;
-				case cancelEvent:
-				case endEvent:
-					this.__end(e);
-					break;
-				case resizeEvent:
-				 	this.__resize();
-					break;
-				case 'webkitTransitionEnd':
-					if (e.target == this.slider && !this.options.hastyPageFlip) this.__flip();
-					break;
-			}
-		},
-		
 		refreshSize: function () {
 			this.wrapperWidth = this.wrapper.clientWidth;
 			this.wrapperHeight = this.wrapper.clientHeight;
@@ -203,7 +184,34 @@ var SwipeView = (function(){
 			this.x += 1;
 			this.__checkPosition();
 		},
-		
+
+		handleEvent: function (e) {
+			switch (e.type) {
+				case startEvent:
+					this.__start(e);
+					break;
+				case moveEvent:
+					this.__move(e);
+					break;
+				case cancelEvent:
+				case endEvent:
+					this.__end(e);
+					break;
+				case resizeEvent:
+				 	this.__resize();
+					break;
+				case 'webkitTransitionEnd':
+					if (e.target == this.slider && !this.options.hastyPageFlip) this.__flip();
+					break;
+			}
+		},
+
+
+		/**
+		 *
+		 * Pseudo private methods
+		 *
+		 */
 		__pos: function (x) {
 			this.x = x;
 			this.slider.style.webkitTransform = 'translate3d(' + x + 'px,0,0)';
@@ -216,7 +224,7 @@ var SwipeView = (function(){
 		},
 
 		__start: function (e) {
-			e.preventDefault();
+			//e.preventDefault();
 
 			if (this.initiated) return;
 			
@@ -228,7 +236,11 @@ var SwipeView = (function(){
 			this.startX = point.pageX;
 			this.startY = point.pageY;
 			this.pointX = point.pageX;
+			this.pointY = point.pageY;
+			this.stepsX = 0;
+			this.stepsY = 0;
 			this.directionX = 0;
+			this.directionLocked = false;
 			
 /*			var matrix = getComputedStyle(this.slider, null).webkitTransform.replace(/[^0-9-.,]/g, '').split(',');
 			this.x = matrix[4] * 1;*/
@@ -243,12 +255,32 @@ var SwipeView = (function(){
 
 			var point = hasTouch ? e.touches[0] : e,
 				deltaX = point.pageX - this.pointX,
+				deltaY = point.pageY - this.pointY,
 				newX = this.x + deltaX,
 				dist = Math.abs(point.pageX - this.startX);
 
 			this.moved = true;
 			this.pointX = point.pageX;
+			this.pointY = point.pageY;
 			this.directionX = deltaX > 0 ? 1 : deltaX < 0 ? -1 : 0;
+			this.stepsX += Math.abs(deltaX);
+			this.stepsY += Math.abs(deltaY);
+
+			// We take a 10px buffer to figure out the direction of the swipe
+			if (this.stepsX < 10 && this.stepsY < 10) {
+//				e.preventDefault();
+				return;
+			}
+
+			// We are scrolling vertically, so skip SwipeView and give the control back to the browser
+			if (!this.directionLocked && this.stepsY > this.stepsX) {
+				this.initiated = false;
+				return;
+			}
+
+			e.preventDefault();
+
+			this.directionLocked = true;
 
 			if (!this.thresholdExceeded && dist >= this.snapThreshold) {
 				this.thresholdExceeded = true;
