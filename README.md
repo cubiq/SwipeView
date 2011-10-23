@@ -9,6 +9,6 @@ Gallery Demo: [http://cubiq.org/dropbox/SwipeView/demo/gallery](http://cubiq.org
 
 eReader Demo: [http://cubiq.org/dropbox/SwipeView/demo/ereader](http://cubiq.org/dropbox/SwipeView/demo/ereader)
 
-Inline Demo: [http://cubiq.org/dropbox/SwipeView/demo/ereader](http://cubiq.org/dropbox/SwipeView/demo/inline)
+Inline Demo: [http://cubiq.org/dropbox/SwipeView/demo/inline](http://cubiq.org/dropbox/SwipeView/demo/inline)
 
 Screencast: [http://www.youtube.com/watch?v=Hhes5JHs8jQ](http://www.youtube.com/watch?v=Hhes5JHs8jQ)
