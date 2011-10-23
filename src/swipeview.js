@@ -312,7 +312,7 @@ var SwipeView = (function(){
 				this.__pos(-this.page * this.pageWidth);
 				return;
 			}
-			
+
 			this.__checkPosition();
 		},
 		

@@ -76,6 +76,7 @@ h1 {
 }
 
 #swipeview-slider span {
+	-webkit-box-sizing:border-box;
 	display:block;
 	text-align:center;
 	font-size:1.4em;
