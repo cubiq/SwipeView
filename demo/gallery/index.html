@@ -76,9 +76,11 @@ gallery = new SwipeView('#wrapper', { numberOfPages: slides.length });
 for (i=0; i<3; i++) {
 	page = i==0 ? slides.length-1 : i-1;
 	el = document.createElement('img');
+	el.className = 'loading';
 	el.src = slides[page].img;
 	el.width = slides[page].width;
 	el.height = slides[page].height;
+	el.onload = function () { this.className = ''; }
 	gallery.masterPages[i].appendChild(el);
 
 	el = document.createElement('span');
@@ -96,6 +98,7 @@ gallery.onFlip(function () {
 
 		if (upcoming != gallery.masterPages[i].dataset.pageIndex) {
 			el = gallery.masterPages[i].querySelector('img');
+			el.className = 'loading';
 			el.src = slides[upcoming].img;
 			el.width = slides[upcoming].width;
 			el.height = slides[upcoming].height;

@@ -73,6 +73,7 @@ body {
 	-webkit-transition-duration:.4s;
 	-webkit-transition-property:opacity;
 	opacity:1;
+	pointer-events:none;
 }
 
 #swipeview-slider span {
@@ -106,7 +107,8 @@ body {
 	background-repeat:no-repeat;
 }
 
-#wrapper > div > .swipeview-loading img {
+#wrapper > div > .swipeview-loading img,
+#swipeview-slider img.loading {
 	-webkit-transition-duration:0;
 	opacity:0;
 }

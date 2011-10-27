@@ -50,7 +50,21 @@ body {
 }
 
 #loading p {
-	padding:0;
+	padding:10px 0;
 	margin:0;
-	height:50px; line-height:50px;
+}
+
+#progressbar {
+	height:5px;
+	width:150px;
+	margin-left:24px;
+	border:1px solid #2F271B;
+	margin-bottom:10px;
+}
+
+#progressbar span {
+	background:#2F271B;
+	display:block;
+	height:5px;
+	width:1px;
 }

@@ -88,6 +88,11 @@ var SwipeView = (function(){
 			this.wrapper.addEventListener('swipeview-movein', fn, false);
 			this.customEvents.push(['movein', fn]);
 		},
+		
+		onTouchStart: function (fn) {
+			this.wrapper.addEventListener('swipeview-touchstart', fn, false);
+			this.customEvents.push(['touchstart', fn]);
+		},
 
 		destroy: function () {
 			var i, l;
@@ -247,7 +252,7 @@ var SwipeView = (function(){
 
 			this.slider.style.webkitTransitionDuration = '0';
 			
-			this.__event('start');
+			this.__event('touchstart');
 		},
 		
 		__move: function (e) {
