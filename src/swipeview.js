@@ -96,7 +96,7 @@ var SwipeView = (function(){
 
 		destroy: function () {
 			var i, l;
-			for (i=0, l=customEvents.length; i<l; i++) {
+			for (i=0, l=this.customEvents.length; i<l; i++) {
 				this.wrapper.removeEventListener('swipeview-' + this.customEvents[i][0], this.customEvents[i][1], false);
 			}
 			
