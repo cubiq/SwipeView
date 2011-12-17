@@ -183,7 +183,7 @@ var SwipeView = (function(){
 		},
 		
 		next: function () {
-			if (this.x == this.maxX) return;
+			if (!this.options.loop && this.x == this.maxX) return;
 			
 			this.directionX = -1;
 			this.x -= 1;
@@ -191,7 +191,7 @@ var SwipeView = (function(){
 		},
 
 		prev: function () {
-			if (this.x == 0) return;
+			if (!this.options.loop && this.x == 0) return;
 
 			this.directionX = 1;
 			this.x += 1;
