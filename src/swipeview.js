@@ -21,7 +21,8 @@ var SwipeView = (function(){
 				text: null,
 				numberOfPages: 3,
 				snapThreshold: null,
-				hastyPageFlip: false
+				hastyPageFlip: false,
+				loop: true
 			}
 		
 			// User defined options
@@ -48,6 +49,8 @@ var SwipeView = (function(){
 				pageIndex = i == -1 ? this.options.numberOfPages - 1 : i;
 				div.dataset.pageIndex = pageIndex;
 				div.dataset.upcomingPageIndex = pageIndex;
+				
+				if (!this.options.loop && i == -1) div.style.visibility = 'hidden';
 
 				this.slider.appendChild(div);
 				this.masterPages.push(div);
@@ -118,7 +121,7 @@ var SwipeView = (function(){
 			this.wrapperWidth = this.wrapper.clientWidth;
 			this.wrapperHeight = this.wrapper.clientHeight;
 			this.pageWidth = this.wrapperWidth;
-			this.maxX = -2 * this.pageWidth + this.wrapperWidth;
+			this.maxX = -this.options.numberOfPages * this.pageWidth + this.wrapperWidth;
 			this.snapThreshold = this.options.snapThreshold === null
 				? Math.round(this.pageWidth * .15)
 				: /%/.test(this.options.snapThreshold)
@@ -128,6 +131,7 @@ var SwipeView = (function(){
 		
 		updatePageCount: function (n) {
 			this.options.numberOfPages = n;
+			this.maxX = -this.options.numberOfPages * this.pageWidth + this.wrapperWidth;
 		},
 		
 		goToPage: function (p) {
@@ -179,12 +183,16 @@ var SwipeView = (function(){
 		},
 		
 		next: function () {
+			if (this.x == this.maxX) return;
+			
 			this.directionX = -1;
 			this.x -= 1;
 			this.__checkPosition();
 		},
 
 		prev: function () {
+			if (this.x == 0) return;
+
 			this.directionX = 1;
 			this.x += 1;
 			this.__checkPosition();
@@ -287,6 +295,10 @@ var SwipeView = (function(){
 
 			this.directionLocked = true;
 
+			if (!this.options.loop && (newX > 0 || newX < this.maxX)) {
+				newX = this.x + (deltaX / 2);
+			}
+
 			if (!this.thresholdExceeded && dist >= this.snapThreshold) {
 				this.thresholdExceeded = true;
 				this.__event('moveout');
@@ -298,21 +310,27 @@ var SwipeView = (function(){
 /*			if (newX > 0 || newX < this.maxX) {
 				newX = this.x + (deltaX / 2);
 			}*/
-
+			
 			this.__pos(newX);
 		},
 		
 		__end: function (e) {
 			if (!this.initiated) return;
 			
-			var point = hasTouch ? e.changedTouches[0] : e;
+			var point = hasTouch ? e.changedTouches[0] : e,
+				dist = Math.abs(point.pageX - this.startX);
 
 			this.initiated = false;
 			
 			if (!this.moved) return;
 
+			if (!this.options.loop && (this.x > 0 || this.x < this.maxX)) {
+				dist = 0;
+				this.__event('movein');
+			}
+
 			// Check if we exceeded the snap threshold
-			if (Math.abs(point.pageX - this.startX) < this.snapThreshold) {
+			if (dist < this.snapThreshold) {
 				this.slider.style.webkitTransitionDuration = '300ms';
 				this.__pos(-this.page * this.pageWidth);
 				return;
@@ -327,7 +345,7 @@ var SwipeView = (function(){
 				className;
 
 			this.masterPages[this.currentMasterPage].className = this.masterPages[this.currentMasterPage].className.replace(/(^|\s)swipeview-active(\s|$)/, '');
-			
+
 			// Flip the page
 			if (this.directionX > 0) {
 				this.page = -Math.ceil(this.x / this.pageWidth);
@@ -366,6 +384,11 @@ var SwipeView = (function(){
 			
 			newX = -this.page * this.pageWidth;
 
+			// Hide the next page if we decided to disable looping
+			if (!this.options.loop) {
+				this.masterPages[pageFlip].style.visibility = newX == 0 || newX == this.maxX ? 'hidden' : '';
+			}
+
 			if (this.x == newX) {
 				this.__flip();		// If we swiped all the way long to the next page (extremely rare but still)
 			} else {
@@ -377,19 +400,16 @@ var SwipeView = (function(){
 		__flip: function () {
 			this.__event('flip');
 
-			for (i=0; i<3; i++) {
+			for (var i=0; i<3; i++) {
 				this.masterPages[i].className = this.masterPages[i].className.replace(/(^|\s)swipeview-loading(\s|$)/, '');		// Remove the loading class
 				this.masterPages[i].dataset.pageIndex = this.masterPages[i].dataset.upcomingPageIndex;
 			}
 		},
 		
 		__event: function (type) {
-			var //i,
-				ev = document.createEvent("Event");
+			var ev = document.createEvent("Event");
 			
 			ev.initEvent('swipeview-' + type, true, true);
-
-//			for (i in parms) ev[i] = parms[i];
 
 			this.wrapper.dispatchEvent(ev);
 		}
