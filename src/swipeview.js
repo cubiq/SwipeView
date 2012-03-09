@@ -35,7 +35,7 @@ var SwipeView = (function(){
 			
 			div = document.createElement('div');
 			div.id = 'swipeview-slider';
-			div.style.cssText = 'position:relative;top:0;height:100%;width:100%;-webkit-transition-duration:0;-webkit-transform:translate3d(0,0,0);-webkit-transition-timining-function:ease-out';
+			div.style.cssText = 'position:relative;top:0;height:100%;width:100%;-webkit-transition-duration:0;-webkit-transform:translate3d(0,0,0);-webkit-transition-timing-function:ease-out';
 			this.wrapper.appendChild(div);
 			this.slider = div;
 
