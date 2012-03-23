@@ -23,7 +23,7 @@ var SwipeView = (function(){
 				snapThreshold: null,
 				hastyPageFlip: false,
 				loop: true
-			}
+			};
 		
 			// User defined options
 			for (i in options) this.options[i] = options[i];
@@ -98,12 +98,10 @@ var SwipeView = (function(){
 		},
 
 		destroy: function () {
-			var i, l;
-			for (i=0, l=this.customEvents.length; i<l; i++) {
-				this.wrapper.removeEventListener('swipeview-' + this.customEvents[i][0], this.customEvents[i][1], false);
+			while ( this.customEvents.length ) {
+				this.wrapper.removeEventListener('swipeview-' + this.customEvents[0][0], this.customEvents[0][1], false);
+				this.customEvents.shift();
 			}
-			
-			this.customEvents = [];
 			
 			// Remove the event listeners
 			window.removeEventListener(resizeEvent, this, false);
@@ -122,11 +120,11 @@ var SwipeView = (function(){
 			this.wrapperHeight = this.wrapper.clientHeight;
 			this.pageWidth = this.wrapperWidth;
 			this.maxX = -this.options.numberOfPages * this.pageWidth + this.wrapperWidth;
-			this.snapThreshold = this.options.snapThreshold === null
-				? Math.round(this.pageWidth * .15)
-				: /%/.test(this.options.snapThreshold)
-					? Math.round(this.pageWidth * this.options.snapThreshold.replace('%', '') / 100)
-					: this.options.snapThreshold;
+			this.snapThreshold = this.options.snapThreshold === null ?
+				Math.round(this.pageWidth * 0.15) :
+				/%/.test(this.options.snapThreshold) ?
+					Math.round(this.pageWidth * this.options.snapThreshold.replace('%', '') / 100) :
+					this.options.snapThreshold;
 		},
 		
 		updatePageCount: function (n) {
@@ -158,7 +156,7 @@ var SwipeView = (function(){
 				this.masterPages[0].style.left = this.page * 100 + '%';
 				this.masterPages[1].style.left = this.page * 100 + 100 + '%';
 				
-				this.masterPages[2].dataset.upcomingPageIndex = this.page == 0 ? this.options.numberOfPages-1 : this.page - 1;
+				this.masterPages[2].dataset.upcomingPageIndex = this.page === 0 ? this.options.numberOfPages-1 : this.page - 1;
 				this.masterPages[0].dataset.upcomingPageIndex = this.page;
 				this.masterPages[1].dataset.upcomingPageIndex = this.page == this.options.numberOfPages-1 ? 0 : this.page + 1;
 			} else if (this.currentMasterPage == 1) {
@@ -166,7 +164,7 @@ var SwipeView = (function(){
 				this.masterPages[1].style.left = this.page * 100 + '%';
 				this.masterPages[2].style.left = this.page * 100 + 100 + '%';
 
-				this.masterPages[0].dataset.upcomingPageIndex = this.page == 0 ? this.options.numberOfPages-1 : this.page - 1;
+				this.masterPages[0].dataset.upcomingPageIndex = this.page === 0 ? this.options.numberOfPages-1 : this.page - 1;
 				this.masterPages[1].dataset.upcomingPageIndex = this.page;
 				this.masterPages[2].dataset.upcomingPageIndex = this.page == this.options.numberOfPages-1 ? 0 : this.page + 1;
 			} else {
@@ -174,7 +172,7 @@ var SwipeView = (function(){
 				this.masterPages[2].style.left = this.page * 100 + '%';
 				this.masterPages[0].style.left = this.page * 100 + 100 + '%';
 
-				this.masterPages[1].dataset.upcomingPageIndex = this.page == 0 ? this.options.numberOfPages-1 : this.page - 1;
+				this.masterPages[1].dataset.upcomingPageIndex = this.page === 0 ? this.options.numberOfPages-1 : this.page - 1;
 				this.masterPages[2].dataset.upcomingPageIndex = this.page;
 				this.masterPages[0].dataset.upcomingPageIndex = this.page == this.options.numberOfPages-1 ? 0 : this.page + 1;
 			}
@@ -191,7 +189,7 @@ var SwipeView = (function(){
 		},
 
 		prev: function () {
-			if (!this.options.loop && this.x == 0) return;
+			if (!this.options.loop && this.x === 0) return;
 
 			this.directionX = 1;
 			this.x += 1;
@@ -211,7 +209,7 @@ var SwipeView = (function(){
 					this.__end(e);
 					break;
 				case resizeEvent:
-				 	this.__resize();
+					this.__resize();
 					break;
 				case 'webkitTransitionEnd':
 					if (e.target == this.slider && !this.options.hastyPageFlip) this.__flip();
@@ -221,10 +219,10 @@ var SwipeView = (function(){
 
 
 		/**
-		 *
-		 * Pseudo private methods
-		 *
-		 */
+		*
+		* Pseudo private methods
+		*
+		*/
 		__pos: function (x) {
 			this.x = x;
 			this.slider.style.webkitTransform = 'translate3d(' + x + 'px,0,0)';
@@ -350,7 +348,7 @@ var SwipeView = (function(){
 			if (this.directionX > 0) {
 				this.page = -Math.ceil(this.x / this.pageWidth);
 				this.currentMasterPage = (this.page + 1) - Math.floor((this.page + 1) / 3) * 3;
-				this.pageIndex = this.pageIndex == 0 ? this.options.numberOfPages - 1 : this.pageIndex - 1;
+				this.pageIndex = this.pageIndex === 0 ? this.options.numberOfPages - 1 : this.pageIndex - 1;
 
 				pageFlip = this.currentMasterPage - 1;
 				pageFlip = pageFlip < 0 ? 2 : pageFlip;
@@ -386,7 +384,7 @@ var SwipeView = (function(){
 
 			// Hide the next page if we decided to disable looping
 			if (!this.options.loop) {
-				this.masterPages[pageFlip].style.visibility = newX == 0 || newX == this.maxX ? 'hidden' : '';
+				this.masterPages[pageFlip].style.visibility = newX === 0 || newX == this.maxX ? 'hidden' : '';
 			}
 
 			if (this.x == newX) {
